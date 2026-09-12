@@ -1,0 +1,7 @@
+[
+  {"id": 1, "department": "Sales", "description": "Create one view of customer interactions across teams."},
+  {"id": 2, "department": "Customer Success", "description": "Find customer history before renewal calls."},
+  {"id": 3, "department": "HR", "description": "Draft job descriptions and onboarding documents."},
+  {"id": 4, "department": "Finance", "description": "Route purchase approvals automatically."}
+]
+

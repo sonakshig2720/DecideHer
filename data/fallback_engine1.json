@@ -1,0 +1,26 @@
+[
+  {
+    "cluster_id": "C1",
+    "cluster_name": "Fragmented Customer Information",
+    "member_use_cases": [1, 2],
+    "underlying_need": "A shared and current customer-information view",
+    "owned_system_candidates": ["Salesforce"],
+    "missing_information": ["Where customer data currently lives", "Who owns updates"]
+  },
+  {
+    "cluster_id": "C2",
+    "cluster_name": "Document Drafting",
+    "member_use_cases": [3],
+    "underlying_need": "Faster first drafts for standard HR documents",
+    "owned_system_candidates": ["Microsoft 365"],
+    "missing_information": ["Required approval and review process"]
+  },
+  {
+    "cluster_id": "C3",
+    "cluster_name": "Purchase Approvals",
+    "member_use_cases": [4],
+    "underlying_need": "Consistent routing and tracking of purchase approvals",
+    "owned_system_candidates": ["ServiceNow"],
+    "missing_information": ["Approval thresholds and exception process"]
+  }
+]

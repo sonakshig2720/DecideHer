@@ -1,0 +1,6 @@
+[
+  {"name": "Salesforce", "capabilities": ["CRM", "customer records", "workflow"]},
+  {"name": "Microsoft 365", "capabilities": ["documents", "collaboration"]},
+  {"name": "ServiceNow", "capabilities": ["approvals", "workflow"]}
+]
+

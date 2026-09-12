@@ -1,0 +1,22 @@
+order,section,field_name,question,input_type,required,options,conditional_on,notes
+1,submitter,name,What's your name?,text,yes,,,Anonymised before any model call
+2,submitter,email,What's your email?,text,yes,,,Anonymised before any model call
+3,submitter,department,Which department are you in?,dropdown,yes,Sales | Customer Service | Service | Finance | Operations | Quality | HR | IT | Marketing | Management,,
+4,submitter,company,Which company do you work for?,text,yes,,,Anonymised before any model call
+5,issue,idea,What is your AI improvement idea?,free text,no,,,One sentence is enough
+6,issue,what_happens_today,How do you do this today without AI?,free text,yes,,,Entry gate
+7,issue,why_we_want_this,How can you imagine this working in the future?,free text,yes,,,Entry gate
+8,issue,departments_involved,Which departments are involved?,multi-select,no,Sales | Service | Finance | Operations | Quality | HR | IT | Marketing | Management,,
+9,issue,summary_generated,Does this summarise your main area for improvement?,generated text,n/a,,,
+9.1,issue,summary_confirmed,,single select,yes,"Yes, that's right | Not quite",summary_generated,
+10,issue,root_cause_stated,Where do you think the main problem lies?,dropdown,no,The people involved | The process itself | The technology | The data | Don't know,,
+11,issue,task_type,What type of work is this mainly?,dropdown,no,Manual | Partly automated | Automated but needs checking | Paper-based | Repetitive data entry | Searching for information | Writing or drafting | Checking or approving | Chasing people,,
+12,issue,frequency,How often does this come up?,dropdown,no,Several times a day | Daily | Weekly | Monthly | Quarterly | Yearly | Unpredictable,,
+13,issue,time_per_occurrence,Roughly how long does it take each time?,dropdown,no,Under 15 min | 15-30 min | 30-60 min | 1-3 hours | 3-8 hours | More than a day,,
+14,issue,roles_involved,Who actually does this work?,multi-select,no,Frontline staff | Team lead | Department head | Specialist | Admin | External partner | Customer,,
+15,issue,people_affected,How many people are affected by this task today?,dropdown,no,1 | 2-5 | 6-20 | 21-50 | More than 50,,Count the people currently affected by the task. Do not estimate future AI impact
+16,issue,data_used,What kind of information does this involve?,multi-select,no,Customer contact details | Customer orders or history | Pricing or quotations | Invoices or payments | Supplier or purchasing | Product or inventory | Employee or HR records | Contracts or legal | Quality or audit records | Technical documentation | Internal know-how,,
+17,issue,it_tools_used,What tools or technologies are used for this task today?,multi-select,no,CRM | ERP | Spreadsheets | Email | Phone or call centre | Shared drive | Ticketing system | BI or reporting tool | Chat | Paper | Custom in-house tool | None,,
+18,issue,security_concern,Are there any sensitive data involved?,multi-select,no,Personal data of staff | Personal data of customers | Financial data | Customer confidential or contractual | Health data | Nothing sensitive | Not sure,,
+19,issue,blocked_by,What stops you from fixing this today?,dropdown,no,No budget | No time | No authority | No skills in-house | Nobody agrees on the fix | Don't know how,,
+20,issue,submitter_role,What is your role in this process? (pick most relevant),dropdown,no,I own it | I do the work | I manage the team that does it | I'm affected by it | I've just noticed it,,
