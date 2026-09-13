@@ -8,6 +8,12 @@ interface DashboardPayload {
   advisorKnowledgeBase: { [key: string]: string };
 }
 
+declare global {
+  interface Window {
+    __DECIDEHER_DASHBOARD__?: DashboardPayload;
+  }
+}
+
 const emptyPayload: DashboardPayload = {
   initiatives: [],
   departments: [],
@@ -26,6 +32,12 @@ const emptyPayload: DashboardPayload = {
 };
 
 async function loadDashboard(): Promise<DashboardPayload> {
+  // Streamlit injects the current pipeline output when it embeds the bundle.
+  // Keeping the fetch fallback means the same build still works standalone.
+  if (window.__DECIDEHER_DASHBOARD__) {
+    return window.__DECIDEHER_DASHBOARD__;
+  }
+
   try {
     const response = await fetch('./dashboard.json', { cache: 'no-store' });
     if (!response.ok) throw new Error(`Dashboard data unavailable (${response.status})`);

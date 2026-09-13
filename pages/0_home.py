@@ -3,6 +3,7 @@ from pathlib import Path
 
 import streamlit as st
 
+from dashboard_embed import build_embedded_dashboard
 from dashboard_export import DASHBOARD_DATA_PATH
 from pipeline import cluster_database
 from sample_data import seed_database
@@ -79,7 +80,7 @@ st.html(
     """
 )
 st.iframe(
-    "/app/static/dashboard/index.html?view=home",
+    build_embedded_dashboard("home"),
     width="stretch",
     height="stretch",
     tab_index=0,

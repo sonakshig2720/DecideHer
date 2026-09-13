@@ -8,6 +8,7 @@ import {
   LayoutDashboard,
   ServerCog,
 } from 'lucide-react';
+import { DecideHerLogo } from './DecideHerLogo';
 
 type ActivePage = 'home' | 'it-context' | 'input' | 'dashboard';
 type OpenPanel = 'how-to-use' | null;
@@ -63,9 +64,11 @@ export const TopNavigation: React.FC<TopNavigationProps> = ({ activePage }) => {
           title="DecideHer Home"
         >
           <span className="dh-nav-brand-mark">
-            <img
-              src="/app/static/Logo.jpeg"
-              alt=""
+            <DecideHerLogo
+              showText={false}
+              withBackground={false}
+              size="sm"
+              variant="color"
             />
           </span>
           <span className="dh-nav-brand-name">

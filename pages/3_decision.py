@@ -3,6 +3,7 @@ from pathlib import Path
 
 import streamlit as st
 
+from dashboard_embed import build_embedded_dashboard
 from dashboard_export import DASHBOARD_DATA_PATH, publish_dashboard
 from engine2 import build_decision_portfolio
 from pipeline import cluster_database
@@ -77,7 +78,7 @@ if built_dashboard.exists() and DASHBOARD_DATA_PATH.exists():
         """
     )
     st.iframe(
-        "/app/static/dashboard/index.html?view=dashboard",
+        build_embedded_dashboard("dashboard"),
         width="stretch",
         height="stretch",
         tab_index=0,

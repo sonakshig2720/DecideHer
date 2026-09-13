@@ -20,7 +20,14 @@ import { Sparkles, X } from 'lucide-react';
 
 type AppView = 'home' | 'dashboard';
 
+declare global {
+  interface Window {
+    __DECIDEHER_VIEW__?: AppView;
+  }
+}
+
 const initialView = (): AppView => {
+  if (window.__DECIDEHER_VIEW__) return window.__DECIDEHER_VIEW__;
   return new URLSearchParams(window.location.search).get('view') === 'dashboard'
     ? 'dashboard'
     : 'home';
