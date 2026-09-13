@@ -1,12 +1,14 @@
 import React from 'react';
-import { InitiativeCluster, ImpactBand, ReadinessBand, EvidenceBand, DecisionType } from '../types';
+import { InitiativeCluster, ImpactBand, ReadinessBand, EvidenceBand } from '../types';
 import { ArrowRight, ChevronRight, Layers, Sparkles, Filter } from 'lucide-react';
+import { getOpportunityTitle } from '../utils/opportunityTitle';
 
 interface InvestmentTableProps {
   initiatives: InitiativeCluster[];
   allInitiativesCount: number;
   showAll: boolean;
   setShowAll: (show: boolean) => void;
+  selectedInitiativeId?: number;
   onSelectInitiative: (initiative: InitiativeCluster) => void;
   activeFilter: string | null;
   onClearFilter: () => void;
@@ -18,6 +20,7 @@ export const InvestmentTable: React.FC<InvestmentTableProps> = ({
   allInitiativesCount,
   showAll,
   setShowAll,
+  selectedInitiativeId,
   onSelectInitiative,
   activeFilter,
   onClearFilter,
@@ -50,50 +53,6 @@ export const InvestmentTable: React.FC<InvestmentTableProps> = ({
     }
   };
 
-  // Decision badge styling matching the DecideHer dashboard design
-  const getDecisionBadge = (decision: DecisionType) => {
-    switch (decision) {
-      case 'REDESIGN':
-        return (
-          <span className="inline-flex items-center justify-center px-2.5 py-1 rounded-md text-[11px] font-bold tracking-wide bg-orange-100/80 text-orange-800 border border-orange-300 min-w-[84px] shadow-xs">
-            REDESIGN
-          </span>
-        );
-      case 'BUILD':
-        return (
-          <span className="inline-flex items-center justify-center px-2.5 py-1 rounded-md text-[11px] font-bold tracking-wide bg-emerald-100/90 text-emerald-800 border border-emerald-300 min-w-[84px] shadow-xs">
-            BUILD
-          </span>
-        );
-      case 'CONSOLIDATE':
-        return (
-          <span className="inline-flex items-center justify-center px-2.5 py-1 rounded-md text-[11px] font-bold tracking-wide bg-indigo-100/90 text-indigo-800 border border-indigo-300 min-w-[84px] shadow-xs">
-            CONSOLIDATE
-          </span>
-        );
-      case 'BUY':
-        return (
-          <span className="inline-flex items-center justify-center px-2.5 py-1 rounded-md text-[11px] font-bold tracking-wide bg-sky-100/90 text-sky-800 border border-sky-300 min-w-[84px] shadow-xs">
-            BUY
-          </span>
-        );
-      case 'INVESTIGATE':
-        return (
-          <span className="inline-flex items-center justify-center px-2.5 py-1 rounded-md text-[11px] font-bold tracking-wide bg-amber-100/90 text-amber-800 border border-amber-300 min-w-[84px] shadow-xs">
-            INVESTIGATE
-          </span>
-        );
-      case 'AVOID':
-        return (
-          <span className="inline-flex items-center justify-center px-2.5 py-1 rounded-md text-[11px] font-bold tracking-wide bg-rose-100/90 text-rose-800 border border-rose-300 min-w-[84px] shadow-xs">
-            AVOID
-          </span>
-        );
-      default:
-        return <span>{decision}</span>;
-    }
-  };
-
   return (
     <div
       id="recommended-investment-portfolio-card"
@@ -104,7 +63,7 @@ export const InvestmentTable: React.FC<InvestmentTableProps> = ({
         <div>
           <div className="flex items-center gap-2">
             <h2 className="text-sm font-bold text-stone-900 tracking-tight">
-              Recommended investment portfolio
+              {showAll ? 'All AI Opportunities' : 'Top 5 AI Opportunities'}
             </h2>
             {activeFilter && (
               <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold bg-[#FDF2F4] text-[#700E22] border border-[#FBE0E5]">
@@ -120,17 +79,14 @@ export const InvestmentTable: React.FC<InvestmentTableProps> = ({
               </span>
             )}
           </div>
-          <p className="text-[10px] text-stone-500 mt-0.2">
-            Evaluated by Impact, Readiness and Evidence across {reportsCount} submissions.
-          </p>
         </div>
 
         <button
           id="view-roadmap-toggle-btn"
           onClick={() => setShowAll(!showAll)}
-          className="inline-flex items-center gap-1.5 text-xs font-bold text-[#700E22] hover:text-[#EA580C] self-start sm:self-auto shrink-0 transition-colors no-print"
+          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-stone-200 bg-stone-50 hover:bg-stone-100 text-xs font-bold text-[#700E22] hover:text-[#580B1B] self-start sm:self-auto shrink-0 transition-all shadow-2xs active:scale-95 no-print"
         >
-          <span>{showAll ? 'Show top 6 recommendations' : `View full roadmap (${allInitiativesCount})`}</span>
+          <span>{showAll ? 'Show top 5' : `Show all (${allInitiativesCount})`}</span>
           <ArrowRight className="w-3.5 h-3.5" />
         </button>
       </div>
@@ -155,13 +111,19 @@ export const InvestmentTable: React.FC<InvestmentTableProps> = ({
             </tr>
           </thead>
           <tbody className="divide-y divide-stone-100">
-            {initiatives.map((item) => (
-              <tr
-                key={item.id}
-                id={`initiative-row-${item.id}`}
-                onClick={() => onSelectInitiative(item)}
-                className="hover:bg-[#FCF9F7] cursor-pointer transition-colors group"
-              >
+            {initiatives.map((item, index) => {
+              const isSelected = selectedInitiativeId === item.id;
+              return (
+                <tr
+                  key={item.id}
+                  id={`initiative-row-${item.id}`}
+                  onClick={() => onSelectInitiative(item)}
+                  className={`cursor-pointer transition-colors group ${
+                    isSelected
+                      ? 'bg-[#FDF2F4] border-l-3 border-[#700E22]'
+                      : 'hover:bg-[#FCF9F7]'
+                  }`}
+                >
                 {/* Index # */}
                 <td className="py-1.5 px-3 font-bold text-stone-600 text-center text-xs">
                   {item.id}
@@ -169,8 +131,12 @@ export const InvestmentTable: React.FC<InvestmentTableProps> = ({
 
                 {/* Initiative / theme name */}
                 <td className="py-1.5 px-3">
-                  <div className="font-bold text-stone-900 group-hover:text-[#700E22] transition-colors text-xs leading-snug">
-                    {item.name}
+                  <div className={`font-bold transition-colors text-xs leading-snug ${
+                    index === 0
+                      ? 'text-[#047857] group-hover:text-[#065F46]'
+                      : 'text-stone-900 group-hover:text-[#700E22]'
+                  }`}>
+                    {getOpportunityTitle(item)}
                   </div>
                   {item.spans3PlusDepts && (
                     <div className="flex items-center gap-1 text-[9px] text-[#B45309] font-bold mt-0.5">
@@ -225,7 +191,8 @@ export const InvestmentTable: React.FC<InvestmentTableProps> = ({
                   <ChevronRight className="w-3.5 h-3.5 text-stone-300 group-hover:text-[#700E22] transition-colors" />
                 </td>
               </tr>
-            ))}
+            );
+          })}
           </tbody>
         </table>
       </div>
@@ -234,7 +201,7 @@ export const InvestmentTable: React.FC<InvestmentTableProps> = ({
       <div className="py-2 px-4 bg-stone-50/50 border-t border-stone-100 flex items-center justify-between text-[10px] text-stone-500 no-print">
         <div className="flex items-center gap-1.5">
           <Sparkles className="w-3 h-3 text-[#700E22]" />
-          <span>Formulaic scoring of {reportsCount} reports (Impact ≥22 High, Readiness = lowest of 4 dimensions).</span>
+          <span>Formulaic scoring of {reportsCount} reports using impact, readiness and evidence.</span>
         </div>
         <span className="font-medium text-stone-600">Click row to inspect</span>
       </div>

@@ -19,8 +19,8 @@ export const MetricCards: React.FC<MetricCardsProps> = ({
       icon: FileText,
       iconBg: 'bg-[#FDF2F4] text-[#700E22] border-[#FBE0E5]',
       value: metrics.reports,
-      title: 'Improvement reports',
-      subtitle: `from ${metrics.departments} departments`,
+      title: 'Improvement ideas',
+      subtitle: `${metrics.reports} ideas create ${metrics.opportunities} AI opportunities`,
       filterKey: 'all',
     },
     {
@@ -107,7 +107,7 @@ export const MetricCards: React.FC<MetricCardsProps> = ({
                 <div className="text-[11px] sm:text-xs font-bold text-stone-800 mt-1 leading-none truncate">
                   {card.title}
                 </div>
-                <div className="text-[10px] text-stone-500 font-normal leading-tight mt-0.5 truncate">
+                <div className="text-[10px] text-stone-500 font-normal leading-tight mt-0.5 line-clamp-2">
                   {card.subtitle}
                 </div>
               </div>

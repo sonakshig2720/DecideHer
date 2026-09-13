@@ -1,6 +1,67 @@
 [
-  {"name": "Salesforce", "capabilities": ["CRM", "customer records", "workflow"]},
-  {"name": "Microsoft 365", "capabilities": ["documents", "collaboration"]},
-  {"name": "ServiceNow", "capabilities": ["approvals", "workflow"]}
+  {
+    "system_id": "SYS-001",
+    "system_name": "SAP S/4HANA",
+    "category": "ERP",
+    "modules_licensed": "Finance, procurement and supply chain",
+    "capabilities_in_use": ["decide or approve", "transfer or sync"],
+    "capabilities_available": ["summarise", "predict or score", "schedule or coordinate"],
+    "data_objects_held": ["financial", "order", "product", "supplier"],
+    "adoption": "Used by everyone who needs it",
+    "departments_using": ["Finance", "Operations", "Management"],
+    "answer_confidence": "Certain",
+    "notes": "Primary enterprise resource planning platform."
+  },
+  {
+    "system_id": "SYS-002",
+    "system_name": "Salesforce Sales Cloud",
+    "category": "CRM",
+    "modules_licensed": "Sales Cloud Enterprise; no Service Cloud",
+    "capabilities_in_use": ["classify or route", "retrieve or answer", "decide or approve"],
+    "capabilities_available": ["draft or generate", "summarise", "predict or score"],
+    "data_objects_held": ["customer", "order"],
+    "adoption": "Used by some teams",
+    "departments_using": ["Sales", "Marketing", "Service"],
+    "answer_confidence": "Certain",
+    "notes": "Customer and sales opportunity records."
+  },
+  {
+    "system_id": "SYS-003",
+    "system_name": "Microsoft 365 & SharePoint",
+    "category": "Collaboration suite",
+    "modules_licensed": "Microsoft 365 E3 and SharePoint Online",
+    "capabilities_in_use": ["draft or generate", "retrieve or answer", "summarise", "schedule or coordinate"],
+    "capabilities_available": ["extract or structure", "classify or route", "transfer or sync"],
+    "data_objects_held": ["employee", "internal knowledge"],
+    "adoption": "Used by everyone who needs it",
+    "departments_using": ["Sales", "Service", "Finance", "Operations", "Quality", "HR", "IT", "Marketing", "Management"],
+    "answer_confidence": "Certain",
+    "notes": "Company-wide collaboration and document platform."
+  },
+  {
+    "system_id": "SYS-004",
+    "system_name": "DATEV",
+    "category": "Finance",
+    "modules_licensed": "Accounting, payroll and document transfer",
+    "capabilities_in_use": ["extract or structure", "transfer or sync", "summarise"],
+    "capabilities_available": ["predict or score"],
+    "data_objects_held": ["employee", "financial", "supplier"],
+    "adoption": "Used by some teams",
+    "departments_using": ["Finance", "HR", "Management"],
+    "answer_confidence": "Fairly sure",
+    "notes": "Used with the external tax adviser."
+  },
+  {
+    "system_id": "SYS-005",
+    "system_name": "Customer Service Portal",
+    "category": "Other",
+    "modules_licensed": "Custom web application",
+    "capabilities_in_use": ["retrieve or answer", "transfer or sync"],
+    "capabilities_available": ["classify or route", "draft or generate"],
+    "data_objects_held": ["customer", "order", "internal knowledge"],
+    "adoption": "Bought but barely used",
+    "departments_using": ["Service", "IT"],
+    "answer_confidence": "Fairly sure",
+    "notes": "Adoption is limited and routing is not configured."
+  }
 ]
-

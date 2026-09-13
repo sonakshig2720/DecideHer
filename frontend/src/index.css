@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@import "../../static/top-navigation.css";
 
 @layer base {
   :root {

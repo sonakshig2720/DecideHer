@@ -11,6 +11,8 @@ from uuid import NAMESPACE_URL, uuid4, uuid5
 ROOT = Path(__file__).parent
 DATABASE_PATH = ROOT / "decideher.db"
 FORM_FIELDS_PATH = ROOT / "data" / "form_fields.csv"
+OWNED_SYSTEM_FIELDS_PATH = ROOT / "data" / "owned_systems.csv"
+OWNED_SYSTEM_SEED_PATH = ROOT / "data" / "owned_systems.json"
 DECISION_OUTPUT_FIELDS_PATH = ROOT / "data" / "decision_output_fields.csv"
 
 
@@ -46,6 +48,24 @@ LIST_FIELDS = {
 }
 
 
+def _owned_system_definition() -> list[dict[str, str]]:
+    with OWNED_SYSTEM_FIELDS_PATH.open(encoding="utf-8", newline="") as source:
+        fields = list(csv.DictReader(source))
+    for field in fields:
+        if not re.fullmatch(r"[A-Za-z_][A-Za-z0-9_]*", field["field_name"]):
+            raise ValueError(f"Unsafe owned-system field name: {field['field_name']}")
+    return fields
+
+
+OWNED_SYSTEM_DEFINITION = _owned_system_definition()
+OWNED_SYSTEM_FIELD_NAMES = [field["field_name"] for field in OWNED_SYSTEM_DEFINITION]
+OWNED_SYSTEM_LIST_FIELDS = {
+    field["field_name"]
+    for field in OWNED_SYSTEM_DEFINITION
+    if field["input_type"] == "multi-select"
+}
+
+
 def _issues_schema(table_name: str = "issues") -> str:
     form_columns = ",\n".join(f'"{name}" TEXT' for name in FORM_FIELD_NAMES)
     derived_columns = ",\n".join(f'"{name}" TEXT' for name in DERIVED_FIELDS)
@@ -58,6 +78,58 @@ def _issues_schema(table_name: str = "issues") -> str:
         cluster_id TEXT,
         created_at TEXT NOT NULL
     )"""
+
+
+def _owned_systems_schema() -> str:
+    columns = ",\n".join(
+        f'"{name}" TEXT' if name != "system_id" else '"system_id" TEXT PRIMARY KEY'
+        for name in OWNED_SYSTEM_FIELD_NAMES
+    )
+    return f"""CREATE TABLE IF NOT EXISTS owned_systems (
+        {columns},
+        created_at TEXT NOT NULL,
+        updated_at TEXT NOT NULL
+    )"""
+
+
+def _encode_owned_system(field: str, value: Any) -> Any:
+    return json.dumps(value or []) if field in OWNED_SYSTEM_LIST_FIELDS else value
+
+
+def _insert_owned_system(
+    connection: sqlite3.Connection,
+    record: dict[str, Any],
+    *,
+    created_at: str,
+    updated_at: str,
+) -> None:
+    columns = [*OWNED_SYSTEM_FIELD_NAMES, "created_at", "updated_at"]
+    values = [
+        *[_encode_owned_system(field, record.get(field)) for field in OWNED_SYSTEM_FIELD_NAMES],
+        created_at,
+        updated_at,
+    ]
+    quoted_columns = ", ".join(f'"{column}"' for column in columns)
+    placeholders = ", ".join("?" for _ in columns)
+    assignments = ", ".join(
+        f'"{column}" = excluded."{column}"'
+        for column in [*OWNED_SYSTEM_FIELD_NAMES[1:], "updated_at"]
+    )
+    connection.execute(
+        f"""INSERT INTO owned_systems ({quoted_columns}) VALUES ({placeholders})
+        ON CONFLICT(system_id) DO UPDATE SET {assignments}""",
+        values,
+    )
+
+
+def _seed_owned_systems(connection: sqlite3.Connection) -> None:
+    count = connection.execute("SELECT COUNT(*) FROM owned_systems").fetchone()[0]
+    if count:
+        return
+    records = json.loads(OWNED_SYSTEM_SEED_PATH.read_text(encoding="utf-8"))
+    now = datetime.now(timezone.utc).isoformat()
+    for record in records:
+        _insert_owned_system(connection, record, created_at=now, updated_at=now)
 
 
 def _encoded(field: str, value: Any) -> Any:
@@ -147,8 +219,67 @@ def _connect() -> sqlite3.Connection:
             engine2_output_json TEXT
         )"""
     )
+    connection.execute(_owned_systems_schema())
+    _seed_owned_systems(connection)
     connection.commit()
     return connection
+
+
+def next_owned_system_id() -> str:
+    """Return the next human-readable system identifier."""
+    with _connect() as connection:
+        rows = connection.execute("SELECT system_id FROM owned_systems").fetchall()
+    numbers = [
+        int(match.group(1))
+        for row in rows
+        if (match := re.fullmatch(r"SYS-(\d+)", str(row["system_id"])))
+    ]
+    return f"SYS-{max(numbers, default=0) + 1:03d}"
+
+
+def list_owned_systems() -> list[dict[str, Any]]:
+    """Return the technology inventory with multi-select fields decoded."""
+    with _connect() as connection:
+        rows = connection.execute(
+            "SELECT * FROM owned_systems ORDER BY system_id"
+        ).fetchall()
+    systems = []
+    for row in rows:
+        record = dict(row)
+        for field in OWNED_SYSTEM_LIST_FIELDS:
+            record[field] = json.loads(record.get(field) or "[]")
+        systems.append(record)
+    return systems
+
+
+def persist_owned_system(record: dict[str, Any]) -> str:
+    """Insert or update an owned system defined by data/owned_systems.csv."""
+    normalized = {
+        field: record.get(field, [] if field in OWNED_SYSTEM_LIST_FIELDS else "")
+        for field in OWNED_SYSTEM_FIELD_NAMES
+    }
+    normalized["system_id"] = str(normalized.get("system_id") or next_owned_system_id())
+    missing = [
+        field["question"] or field["field_name"]
+        for field in OWNED_SYSTEM_DEFINITION
+        if field["required"] == "yes" and not normalized.get(field["field_name"])
+    ]
+    if missing:
+        raise ValueError("Please complete: " + ", ".join(missing))
+    now = datetime.now(timezone.utc).isoformat()
+    with _connect() as connection:
+        existing = connection.execute(
+            "SELECT created_at FROM owned_systems WHERE system_id = ?",
+            (normalized["system_id"],),
+        ).fetchone()
+        created_at = existing["created_at"] if existing else now
+        _insert_owned_system(
+            connection,
+            normalized,
+            created_at=created_at,
+            updated_at=now,
+        )
+    return normalized["system_id"]
 
 
 def persist_submission(

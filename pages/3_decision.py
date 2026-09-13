@@ -5,13 +5,23 @@ import streamlit as st
 
 from dashboard_export import DASHBOARD_DATA_PATH, publish_dashboard
 from engine2 import build_decision_portfolio
+from pipeline import cluster_database
+from sample_data import seed_database
 
 clusters = st.session_state.get("clusters", [])
 if not clusters or not st.session_state.get("pipeline_complete_engine1"):
-    st.warning("Submit the input form first so the complete pipeline can prepare the output.")
-    if st.button("Go to input"):
-        st.switch_page("pages/1_intake.py")
-    st.stop()
+    try:
+        # Direct links from the React home page start a fresh Streamlit page load.
+        # Rebuild from the anonymised database so the dashboard remains navigable.
+        seed_database()
+        clusters, _ = cluster_database()
+        st.session_state["clusters"] = clusters
+        st.session_state["interviews_by_cluster"] = {}
+        st.session_state["pipeline_complete_engine1"] = True
+    except Exception as exc:
+        st.error("The DecideHer pipeline could not prepare the output dashboard.")
+        st.code(str(exc))
+        st.stop()
 
 dashboard = build_decision_portfolio(clusters)
 publish_dashboard(dashboard)
@@ -67,7 +77,7 @@ if built_dashboard.exists() and DASHBOARD_DATA_PATH.exists():
         """
     )
     st.iframe(
-        "/app/static/dashboard/index.html",
+        "/app/static/dashboard/index.html?view=dashboard",
         width="stretch",
         height="stretch",
         tab_index=0,

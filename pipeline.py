@@ -1,9 +1,14 @@
 """Orchestrate Engine 1 over every intake record in SQLite."""
 from dashboard_export import publish_dashboard
-from engine1 import load_demo_input, run_engine1
+from engine1 import run_engine1
 from engine2 import build_decision_portfolio
-from schemas import UseCase
-from storage import fetch_issues_for_engine1, replace_engine1_clusters, save_engine2_outputs
+from schemas import OwnedSystem, UseCase
+from storage import (
+    fetch_issues_for_engine1,
+    list_owned_systems,
+    replace_engine1_clusters,
+    save_engine2_outputs,
+)
 
 
 def _numeric_score(value: object, *, default: int = 1) -> int:
@@ -47,7 +52,17 @@ def cluster_database(focus_issue_id: str | None = None) -> tuple[list[dict], str
             )
         )
 
-    _, systems = load_demo_input()
+    systems = [
+        OwnedSystem(
+            name=system["system_name"],
+            capabilities=(
+                system.get("capabilities_in_use", [])
+                + system.get("capabilities_available", [])
+                + system.get("data_objects_held", [])
+            ),
+        )
+        for system in list_owned_systems()
+    ]
     clusters = run_engine1(use_cases, systems)
     assignments = {}
     focused_cluster_id = None

@@ -9,136 +9,259 @@ from privacy import AnonymizationError, anonymize_record, anonymized_role_label
 from sample_data import seed_database
 from schemas import IssueSubmission
 from storage import persist_submission
+from ui_navigation import TOP_NAVIGATION_CSS, navigation_html
 
 st.html(
     """
     <style>
+      __TOP_NAVIGATION_CSS__
+
       [data-testid="stAppViewContainer"] {
         background:
           radial-gradient(circle at 92% 4%, rgba(234, 88, 12, 0.09), transparent 24rem),
           #FAF8F5;
       }
 
-      .stMainBlockContainer {
-        width: min(1540px, calc(100vw - 3rem)) !important;
-        max-width: 1540px !important;
-        padding: 1.5rem 0 4rem !important;
+      [data-testid="stHeader"],
+      [data-testid="stToolbar"],
+      [data-testid="stAppToolbar"],
+      [data-testid="stElementToolbar"],
+      [data-testid="stDecoration"],
+      [data-testid="stStatusWidget"],
+      #MainMenu,
+      footer {
+        display: none !important;
       }
 
-      .intake-hero {
+      .stMainBlockContainer {
+        width: 100% !important;
+        max-width: none !important;
+        padding: 0 0 4rem !important;
+      }
+
+      .intake-topbar {
         position: relative;
-        overflow: hidden;
+        z-index: 50;
+        width: 100%;
+        padding: 0.75rem 2rem;
+        border-bottom: 1px solid #580B1B;
+        color: white;
+        background: #700E22;
+        box-shadow: 0 4px 14px rgba(52, 7, 18, 0.2);
+        font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      }
+
+      .intake-topbar-inner {
         display: flex;
         align-items: center;
         justify-content: space-between;
-        gap: 2.5rem;
-        padding: 2rem 2.25rem;
-        border: 1px solid #4D0A18;
-        border-radius: 20px;
-        color: white;
-        background: linear-gradient(125deg, #340712 0%, #700E22 66%, #8F172F 100%);
-        box-shadow: 0 18px 45px rgba(52, 7, 18, 0.18);
+        gap: 1rem;
+        width: 100%;
+        max-width: 1780px;
+        margin: 0 auto;
       }
 
-      .intake-hero::after {
-        content: "";
-        position: absolute;
-        width: 280px;
-        height: 280px;
-        right: -90px;
-        top: -140px;
-        border-radius: 999px;
-        background: rgba(245, 166, 35, 0.18);
-      }
-
-      .intake-badge {
+      .intake-brand {
         display: inline-flex;
+        flex: 0 0 auto;
         align-items: center;
-        gap: 0.45rem;
-        padding: 0.3rem 0.65rem;
-        border: 1px solid rgba(255,255,255,0.24);
-        border-radius: 999px;
-        color: #FDE8D5;
-        background: rgba(255,255,255,0.1);
-        font-size: 0.72rem;
-        font-weight: 800;
-        letter-spacing: 0.08em;
-        text-transform: uppercase;
+        gap: 0.5rem;
+        padding: 0.5rem 0.75rem;
+        border: 1px solid #E7E5E4;
+        border-radius: 12px;
+        color: #700E22 !important;
+        background: white;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+        text-decoration: none !important;
       }
 
-      .intake-badge-dot {
-        width: 0.45rem;
-        height: 0.45rem;
-        border-radius: 999px;
-        background: #F5A623;
-      }
-
-      .intake-hero h1 {
+      .intake-brand-mark {
         position: relative;
-        z-index: 1;
-        max-width: 980px;
-        margin: 0.85rem 0 0.65rem;
-        color: white;
-        font-size: clamp(2.65rem, 4.6vw, 4.35rem);
-        line-height: 1;
+        overflow: hidden;
+        width: 38px;
+        height: 30px;
+        flex: 0 0 38px;
+      }
+
+      .intake-brand-mark img {
+        position: absolute;
+        top: -29px;
+        left: -36px;
+        width: 114px;
+        max-width: none;
+        height: 114px;
+      }
+
+      .intake-brand-name {
+        font-size: 1.08rem;
+        font-weight: 900;
         letter-spacing: -0.035em;
       }
 
-      .intake-hero h2 {
-        position: relative;
-        z-index: 1;
-        margin: 0 0 0.7rem;
-        color: #FFF8F6;
-        font-size: clamp(1.5rem, 2.2vw, 2rem);
-        line-height: 1.25;
-        letter-spacing: -0.015em;
+      .intake-brand-name span {
+        color: #EA580C;
       }
 
-      .intake-hero p {
-        position: relative;
-        z-index: 1;
-        max-width: 1000px;
-        margin: 0;
-        color: #F3E7EA;
-        font-size: 1.18rem;
-        line-height: 1.55;
+      .intake-nav {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        gap: clamp(0.5rem, 0.7vw, 0.75rem);
+        flex-wrap: wrap;
       }
 
-      .intake-hero p + p {
-        margin-top: 0.6rem;
-        color: #F9EEF0;
+      .intake-nav-link,
+      .intake-nav-button {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.35rem;
+        min-height: 2rem;
+        padding: 0.38rem 0.75rem;
+        border: 1px solid transparent;
+        border-radius: 8px;
+        color: rgba(255,255,255,0.92) !important;
+        background: transparent;
+        font-size: 0.78rem;
+        font-weight: 650;
+        line-height: 1;
+        text-decoration: none !important;
+        cursor: pointer;
       }
 
-      .intake-hero-copy {
-        position: relative;
-        z-index: 1;
-        flex: 1 1 auto;
-      }
-
-      .intake-logo {
-        position: relative;
-        z-index: 1;
+      .intake-nav-link svg,
+      .intake-nav-button svg {
+        width: 0.875rem;
+        height: 0.875rem;
         flex: 0 0 auto;
-        width: clamp(230px, 19vw, 285px);
-        height: clamp(230px, 19vw, 285px);
-        object-fit: cover;
-        border: 1px solid rgba(255,255,255,0.38);
-        border-radius: 18px;
+        fill: none;
+        stroke: currentColor;
+        stroke-width: 2;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+      }
+
+      .intake-nav-link.is-primary svg {
+        stroke: #292524;
+      }
+
+      .intake-nav-button .nav-accent-icon {
+        stroke: #F5A623;
+      }
+
+      .intake-nav-button .nav-chevron {
+        width: 0.75rem;
+        height: 0.75rem;
+        opacity: 0.8;
+      }
+
+      .intake-nav-link:hover,
+      .intake-nav-button:hover,
+      .intake-nav-link.is-active {
+        border-color: rgba(255,255,255,0.24);
+        color: white !important;
+        background: rgba(255,255,255,0.15);
+      }
+
+      .intake-nav-link.is-primary {
+        border-color: #D97706;
+        color: #292524 !important;
+        background: #F5A623;
+        font-weight: 800;
+      }
+
+      .intake-nav-link.is-primary:hover {
+        background: #E09612;
+      }
+
+      .intake-nav-menu {
+        position: relative;
+      }
+
+      .intake-nav-popover {
+        position: absolute;
+        top: calc(100% + 0.45rem);
+        right: 0;
+        display: none;
+        width: 340px;
+        padding: 1rem;
+        border: 1px solid #E7E5E4;
+        border-radius: 14px;
+        color: #44403C;
         background: white;
-        box-shadow: 0 14px 30px rgba(20, 2, 7, 0.26);
+        box-shadow: 0 18px 45px rgba(28, 25, 23, 0.2);
+        font-size: 0.78rem;
+        line-height: 1.45;
+      }
+
+      .intake-nav-menu:hover .intake-nav-popover,
+      .intake-nav-menu:focus-within .intake-nav-popover {
+        display: block;
+      }
+
+      .intake-nav-popover strong {
+        display: block;
+        margin-bottom: 0.45rem;
+        color: #700E22;
+        font-size: 0.82rem;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+      }
+
+      .intake-nav-popover p {
+        margin: 0.38rem 0;
+      }
+
+      .intake-page-heading {
+        width: min(980px, calc(100vw - 3rem));
+        margin: 0 auto;
+        padding: 3rem 0 0.25rem;
+        text-align: center;
+      }
+
+      .intake-page-heading h1 {
+        margin: 0;
+        color: #1C1917;
+        font-size: clamp(2.1rem, 4vw, 3.4rem);
+        line-height: 1.05;
+        letter-spacing: -0.045em;
+      }
+
+      .intake-page-heading h2 {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.45rem;
+        margin: 1.15rem 0 0.55rem;
+        padding: 0.5rem 1rem;
+        border: 1px solid #FBE0E5;
+        border-radius: 999px;
+        color: #700E22;
+        background: #FDF2F4;
+        font-size: 1rem;
+        font-weight: 850;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+      }
+
+      .intake-page-heading h2::before {
+        content: "";
+        width: 0.45rem;
+        height: 0.45rem;
+        border-radius: 999px;
+        background: #EA580C;
       }
 
       .privacy-note {
         display: flex;
         gap: 0.85rem;
         align-items: flex-start;
-        margin: 1rem 0 1.35rem;
+        width: min(1540px, calc(100vw - 3rem));
+        margin: 1.35rem auto;
         padding: 0.9rem 1rem;
         border: 1px solid #F5D4C6;
         border-radius: 12px;
         color: #5B2118;
         background: #FFF8F6;
-        font-size: 1.05rem;
+        font-size: 0.88rem;
         line-height: 1.5;
       }
 
@@ -155,6 +278,8 @@ st.html(
       }
 
       [data-testid="stForm"] {
+        width: min(1540px, calc(100vw - 3rem)) !important;
+        margin: 0 auto !important;
         padding: 2rem 2.1rem 2.25rem !important;
         border: 1px solid #E9E2DE !important;
         border-radius: 18px !important;
@@ -165,7 +290,7 @@ st.html(
       [data-testid="stForm"] h3 {
         margin: 0.25rem 0 0 !important;
         color: #700E22 !important;
-        font-size: 1.4rem !important;
+        font-size: 1.1rem !important;
         letter-spacing: -0.01em;
       }
 
@@ -173,7 +298,7 @@ st.html(
         margin-top: -0.15rem;
         padding-top: 0;
         color: #6B625E;
-        font-size: 1.08rem;
+        font-size: 0.88rem;
         font-weight: 700;
         text-align: right;
         white-space: nowrap;
@@ -191,7 +316,7 @@ st.html(
 
       [data-testid="stWidgetLabel"] p {
         color: #3F3A37 !important;
-        font-size: 1.14rem !important;
+        font-size: 0.9rem !important;
         font-weight: 650 !important;
       }
 
@@ -200,7 +325,7 @@ st.html(
       [data-testid="stForm"] [role="combobox"],
       [data-testid="stForm"] [role="radiogroup"] label,
       [data-testid="stForm"] [data-testid="stCaptionContainer"] p {
-        font-size: 1.08rem !important;
+        font-size: 0.88rem !important;
       }
 
       [data-testid="stTextInputRootElement"],
@@ -243,7 +368,7 @@ st.html(
         color: white !important;
         background: #700E22 !important;
         font-weight: 800 !important;
-        font-size: 1.08rem !important;
+        font-size: 0.9rem !important;
         box-shadow: 0 7px 18px rgba(112, 14, 34, 0.2) !important;
       }
 
@@ -254,49 +379,41 @@ st.html(
 
       @media (max-width: 700px) {
         .stMainBlockContainer {
-          width: calc(100vw - 1.2rem) !important;
-          padding: 0.8rem 0 2.5rem !important;
+          padding: 0 0 2.5rem !important;
         }
-        .intake-hero { padding: 1.4rem 1.25rem; border-radius: 15px; gap: 1.25rem; }
-        .intake-logo { width: 125px; height: 125px; border-radius: 12px; }
+        .intake-topbar { padding: 0.65rem 0.75rem; }
+        .intake-topbar-inner { align-items: flex-start; flex-direction: column; }
+        .intake-nav { justify-content: flex-start; }
+        .intake-nav-popover { left: 0; right: auto; width: min(340px, calc(100vw - 1.5rem)); }
+        .intake-page-heading,
+        .privacy-note,
+        [data-testid="stForm"] { width: calc(100vw - 1.2rem) !important; }
+        .intake-page-heading { padding-top: 2rem; }
         [data-testid="stForm"] { padding: 1.1rem 1rem 1.3rem !important; }
       }
 
       @media (max-width: 520px) {
-        .intake-hero { align-items: center; flex-direction: column; gap: 1rem; }
-        .intake-logo { width: 120px; height: 120px; }
-        .intake-hero h1 { font-size: 2.15rem; }
-        .intake-hero h2 { font-size: 1.3rem; }
-        .intake-hero p { font-size: 1rem; }
+        .intake-page-heading h1 { font-size: 2rem; }
       }
     </style>
 
-    <section class="intake-hero">
-      <img class="intake-logo" src="/app/static/decideher-logo.jpeg" alt="DecideHer logo" />
-      <div class="intake-hero-copy">
-        <div class="intake-badge"><span class="intake-badge-dot"></span>DecideHer · Secure intake</div>
-        <h1>YOUR IDEAS. YOUR COMPANY’S AI FUTURE.</h1>
-        <h2>Where could AI make your work easier?</h2>
-        <p>Tell us about a task you’d like to improve, a challenge you face, or an AI idea you’d like to explore. No technical expertise needed—just your experience.</p>
-        <p>Your input will help your company identify shared needs and prioritise where AI could make a meaningful difference.</p>
-      </div>
+    __TOP_NAVIGATION__
+
+    <section class="intake-page-heading">
+      <h1>Turning AI Ideas in Action</h1>
+      <h2>Employee Idea Input Form</h2>
     </section>
 
     <div class="privacy-note">
       <span class="privacy-icon">✓</span>
       <span><strong>Your details stay private.</strong> Direct identifiers are removed before the submission is stored.</span>
     </div>
-    """
+    """.replace("__TOP_NAVIGATION_CSS__", TOP_NAVIGATION_CSS).replace(
+        "__TOP_NAVIGATION__", navigation_html("input")
+    )
 )
 
 seed_database()
-
-if st.button("Preview sample dashboard", type="secondary"):
-    clusters, _ = cluster_database()
-    st.session_state["clusters"] = clusters
-    st.session_state["interviews_by_cluster"] = {}
-    st.session_state["pipeline_complete_engine1"] = True
-    st.switch_page("pages/3_decision.py")
 
 values = render_intake_form()
 if values:

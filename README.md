@@ -25,7 +25,7 @@ streamlit run app.py
 
 Complete the input form and select **Submit AI improvement idea**. The app anonymises the submission, runs Engine 1 using the owned-systems data from the repository, and opens the output screen automatically.
 
-The repository data lives in `data/sample_submissions.json` and `data/owned_systems.json`. Engine 1 derives `capability_type` and `data_object`, then clusters on that pair rather than raw text similarity. Engine 2 applies the field definitions and formulas in `data/decision_output_fields.csv`; this is the renamed copy of the supplied `derived_fields 2.csv` reference.
+The repository data lives in `data/sample_submissions.json` and `data/owned_systems.json`. The IT Context page is generated from `data/owned_systems.csv`; registered systems are stored in SQLite and feed owned-system matching and technology-readiness scoring. Engine 1 derives `capability_type` and `data_object`, then clusters on that pair rather than raw text similarity. Engine 2 applies the field definitions and formulas in `data/decision_output_fields.csv`; this is the renamed copy of the supplied `derived_fields 2.csv` reference.
 
 The supplied executive frontend is integrated in `frontend/` and receives anonymised pipeline output through `static/dashboard/dashboard.json`. Rebuild it after changing React code:
 

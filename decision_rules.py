@@ -2,11 +2,9 @@
 from __future__ import annotations
 
 from collections import Counter
-import json
-from pathlib import Path
 from typing import Any
 
-from storage import fetch_issues_for_engine1
+from storage import fetch_issues_for_engine1, list_owned_systems
 
 BANDS = ("Low", "Medium", "High")
 BLOCKERS = [
@@ -21,7 +19,6 @@ DEPARTMENT_COLORS = [
     "#EA580C", "#700E22", "#F59E0B", "#4A0415", "#C2410C",
     "#9F1239", "#FB923C", "#D97706", "#BE123C", "#A16207",
 ]
-OWNED_SYSTEMS_PATH = Path(__file__).parent / "data" / "owned_systems.json"
 
 
 def _number(value: object, default: int = 1) -> int:
@@ -72,10 +69,7 @@ def _report_evidence_score(issue: dict[str, Any]) -> int:
 
 def _owned_system_evidence(cluster: dict[str, Any]) -> tuple[list[str], bool, str | None]:
     """Return strict matches, unused flag, and technology score when the registry supports it."""
-    try:
-        systems = json.loads(OWNED_SYSTEMS_PATH.read_text(encoding="utf-8"))
-    except (FileNotFoundError, json.JSONDecodeError):
-        return [], False, None
+    systems = list_owned_systems()
 
     registry_available = bool(systems) and all(
         "data_objects_held" in system and "adoption" in system for system in systems
@@ -85,20 +79,42 @@ def _owned_system_evidence(cluster: dict[str, Any]) -> tuple[list[str], bool, st
 
     capability = str(cluster.get("capability_type") or "").casefold()
     data_object = str(cluster.get("data_object") or "").casefold()
+
+    def capability_values(system: dict[str, Any], field: str) -> set[str]:
+        return {str(value).casefold() for value in system.get(field, [])}
+
     matches = [
         system
         for system in systems
-        if capability in {str(value).casefold() for value in system.get("capabilities", [])}
+        if capability in (
+            capability_values(system, "capabilities_in_use")
+            | capability_values(system, "capabilities_available")
+        )
         and data_object in {str(value).casefold() for value in system.get("data_objects_held", [])}
     ]
     if matches:
         adoptions = {str(system.get("adoption") or "").casefold() for system in matches}
-        unused = "licensed but unused" in adoptions
-        technology = "High" if adoptions & {"fully used", "partly used"} else "Medium"
-        return [str(system["name"]) for system in matches], unused, technology
+        unused = any(
+            capability in capability_values(system, "capabilities_available")
+            and capability not in capability_values(system, "capabilities_in_use")
+            for system in matches
+        ) or "bought but barely used" in adoptions
+        in_use_match = any(
+            capability in capability_values(system, "capabilities_in_use")
+            for system in matches
+        )
+        uncertain = any(
+            str(system.get("answer_confidence") or "").casefold() == "guessing"
+            for system in matches
+        )
+        technology = "High" if in_use_match and not uncertain else "Medium"
+        return [str(system["system_name"]) for system in matches], unused, technology
 
     partial_match = any(
-        capability in {str(value).casefold() for value in system.get("capabilities", [])}
+        capability in (
+            capability_values(system, "capabilities_in_use")
+            | capability_values(system, "capabilities_available")
+        )
         or data_object in {str(value).casefold() for value in system.get("data_objects_held", [])}
         for system in systems
     )

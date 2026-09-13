@@ -10,7 +10,18 @@ DATA_DIR = Path(__file__).parent / "data"
 
 def load_demo_input() -> tuple[list[UseCase], list[OwnedSystem]]:
     use_cases = [UseCase.model_validate(row) for row in json.loads((DATA_DIR / "demo_use_cases.json").read_text())]
-    systems = [OwnedSystem.model_validate(row) for row in json.loads((DATA_DIR / "owned_systems.json").read_text())]
+    system_rows = json.loads((DATA_DIR / "owned_systems.json").read_text())
+    systems = [
+        OwnedSystem(
+            name=row.get("system_name") or row["name"],
+            capabilities=(
+                row.get("capabilities_in_use", [])
+                + row.get("capabilities_available", [])
+                + row.get("data_objects_held", [])
+            ) or row.get("capabilities", []),
+        )
+        for row in system_rows
+    ]
     return use_cases, systems
 
 

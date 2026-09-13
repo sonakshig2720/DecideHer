@@ -1,0 +1,12 @@
+order,field_name,question,input_type,required,options,notes
+1,system_id,,auto,yes,,Primary key
+2,system_name,What is the system called?,text,yes,,"Free text. Any product name. e.g. SAP, Salesforce, Microsoft 365, Google Workspace, DATEV, in-house tool"
+3,category,What kind of system is it?,dropdown,yes,CRM | ERP | ITSM or ticketing | Collaboration suite | BI or reporting | HR | Finance | Document management | Industry-specific | Other,
+4,modules_licensed,Which modules or editions do you actually hold?,free text,no,,"The qualifier that makes large suites answerable. e.g. Salesforce Sales Cloud only, no Service Cloud"
+5,capabilities_in_use,What does this system do for you today?,multi-select,yes,draft or generate | extract or structure | classify or route | retrieve or answer | summarise | predict or score | decide or approve | transfer or sync | schedule or coordinate,"Same closed list as capability_type so a cluster matches directly. What it actually does, not what the product is capable of"
+6,capabilities_available,What could it do that you haven't set up?,multi-select,no,draft or generate | extract or structure | classify or route | retrieve or answer | summarise | predict or score | decide or approve | transfer or sync | schedule or coordinate,"A match here and not in capabilities_in_use produces the you pay for this and haven't switched it on finding"
+7,data_objects_held,What information does it hold?,multi-select,yes,customer | employee | order | product | supplier | financial | internal knowledge | quality or compliance,Same closed list as data_object
+8,adoption,How widely is it used?,dropdown,yes,Used by everyone who needs it | Used by some teams | Bought but barely used,Plain language on purpose. Bought but barely used is the value that matters
+9,departments_using,Which departments use it today?,multi-select,no,Sales | Service | Finance | Operations | Quality | HR | IT | Marketing | Management,
+10,answer_confidence,How sure are you about the above?,dropdown,no,Certain | Fairly sure | Guessing,"Feeds readiness_technology. A match against a Guessing row must not score High"
+11,notes,Anything else about this system?,free text,no,,
