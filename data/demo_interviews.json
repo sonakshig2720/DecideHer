@@ -1,0 +1,20 @@
+[
+  {
+    "stakeholder": "Sales Operations",
+    "role": "Process owner",
+    "answers": {
+      "Where is customer data stored?": "Salesforce is the source of truth, but spreadsheets are used during handoffs.",
+      "Who owns updates?": "Sales Operations owns account data updates.",
+      "Walk me through the current workflow, including its handoffs.": "Sales creates an account, then Customer Success copies details into a spreadsheet."
+    }
+  },
+  {
+    "stakeholder": "Customer Success",
+    "role": "Downstream user",
+    "answers": {
+      "Where is customer data stored?": "The team relies on a shared spreadsheet because Salesforce is often stale.",
+      "Who owns updates?": "Each account manager updates their own records.",
+      "Walk me through the current workflow, including its handoffs.": "Customer Success receives a spreadsheet after the deal closes and corrects missing fields."
+    }
+  }
+]

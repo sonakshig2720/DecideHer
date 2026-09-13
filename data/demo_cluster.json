@@ -1,0 +1,10 @@
+{
+  "cluster_id": "C1",
+  "cluster_name": "Fragmented Customer Information",
+  "member_use_cases": [2, 5, 8],
+  "underlying_need": "Central customer information",
+  "owned_system_candidates": ["Salesforce"],
+  "missing_information": ["Where customer data lives", "Who updates it"],
+  "value_band": "medium",
+  "effort_or_cost_band": "medium"
+}

@@ -1,11 +1,6 @@
-streamlit
-pydantic
-pandas
-numpy
-scikit-learn
-google-genai
-python-dotenv
+streamlit>=1.36,<2
+pydantic>=2.7,<3
+google-genai>=1.0,<2
+python-dotenv>=1.0,<2
 httpx
-gspread
-google-auth
-google-api-python-client
+pytest>=8,<9

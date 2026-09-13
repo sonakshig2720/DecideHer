@@ -1,6 +1,10 @@
-"""Shared, validated contract between Engine 1 and Engine 2."""
-from typing import Literal
-from pydantic import BaseModel, Field
+"""Shared contracts at the Engine 1 -> Engine 2 seam."""
+from __future__ import annotations
+
+from enum import Enum
+from typing import Any, Literal
+
+from pydantic import BaseModel, ConfigDict, Field, field_validator
 
 
 class UseCase(BaseModel):
@@ -9,6 +13,16 @@ class UseCase(BaseModel):
     description: str
     value_band: str | None = None
     effort_or_cost_band: str | None = None
+    capability_type: str = "extract or structure"
+    data_object: str = "internal knowledge"
+    departments_involved: list[str] = Field(default_factory=list)
+    tools_used: list[str] = Field(default_factory=list)
+    blocked_by: str | None = None
+    submitter_role: str | None = None
+    root_cause_stated: str | None = None
+    root_cause_derived: str = "Process"
+    volume_proxy: int = 1
+    reach_score: int = 1
 
 
 class IssueSubmission(BaseModel):
@@ -21,6 +35,7 @@ class IssueSubmission(BaseModel):
     what_happens_today: str
     why_we_want_this: str
     departments_involved: list[str] = Field(default_factory=list)
+    summary_generated: str | None = None
     summary_confirmed: Literal["Yes, that's right", "Not quite"] | None = None
     root_cause_stated: str | None = None
     task_type: str | None = None
@@ -40,7 +55,8 @@ class DerivedIssueFields(BaseModel):
     capability_type: str
     data_object: str
     personal_data_flag: Literal["yes", "no", "unclear"]
-    volume_proxy: Literal["low", "medium", "high"] | None = None
+    volume_proxy: int = Field(ge=1, le=30)
+    reach_score: int = Field(ge=1, le=5)
 
 
 class OwnedSystem(BaseModel):
@@ -55,16 +71,107 @@ class Engine1Cluster(BaseModel):
     underlying_need: str
     owned_system_candidates: list[str] = Field(default_factory=list)
     missing_information: list[str] = Field(default_factory=list)
+    value_band: str = "unknown"
+    effort_or_cost_band: str = "unknown"
+    capability_type: str | None = None
+    data_object: str | None = None
+    reports_count: int = 0
+    departments_count: int = 0
+    anonymization_provider: str = "local"
+    anonymization_warning: str | None = None
 
 
-DecisionVerdict = Literal["BUILD", "BUY", "REDESIGN", "CONSOLIDATE", "INVESTIGATE", "AVOID"]
+class Verdict(str, Enum):
+    BUILD = "BUILD"
+    BUY = "BUY"
+    REDESIGN = "REDESIGN"
+    CONSOLIDATE = "CONSOLIDATE"
+    INVESTIGATE = "INVESTIGATE"
+    AVOID = "AVOID"
 
 
-class RoadmapCluster(Engine1Cluster):
-    """Merged shape: Engine 1 output plus Engine 2's decision fields."""
-    verdict: DecisionVerdict | None = None
+class Band(str, Enum):
+    LOW = "low"
+    MEDIUM = "medium"
+    HIGH = "high"
+    UNKNOWN = "unknown"
+
+
+class Cluster(BaseModel):
+    """The frozen merged shape. Unknown Engine 1 fields are preserved."""
+
+    model_config = ConfigDict(extra="allow")
+
+    cluster_id: str
+    cluster_name: str
+    member_use_cases: list[int] = Field(default_factory=list)
+    underlying_need: str
+    owned_system_candidates: list[str] = Field(default_factory=list)
+    missing_information: list[str] = Field(default_factory=list)
+    verdict: Verdict | None = None
     reasoning: str | None = None
     confidence: float | None = Field(default=None, ge=0, le=1)
-    interview_required: bool | None = None
+    value_band: Band = Band.UNKNOWN
+    effort_or_cost_band: Band = Band.UNKNOWN
+    missing_evidence: list[str] = Field(default_factory=list)
+    interview_required: bool = False
     questions: list[str] = Field(default_factory=list)
     next_action: str | None = None
+
+    @field_validator("cluster_id", "cluster_name", "underlying_need")
+    @classmethod
+    def not_blank(cls, value: str) -> str:
+        value = value.strip()
+        if not value:
+            raise ValueError("must not be blank")
+        return value
+
+
+class Judgment(BaseModel):
+    verdict: Verdict
+    reasoning: str
+    confidence: float = Field(ge=0, le=1)
+    value_band: Band
+    effort_or_cost_band: Band
+    missing_evidence: list[str] = Field(default_factory=list)
+
+
+class InterviewAnswer(BaseModel):
+    stakeholder: str
+    role: str = "Stakeholder"
+    answers: dict[str, str]
+
+    @field_validator("stakeholder")
+    @classmethod
+    def stakeholder_not_blank(cls, value: str) -> str:
+        if not value.strip():
+            raise ValueError("stakeholder must not be blank")
+        return value.strip()
+
+
+class Conflict(BaseModel):
+    topic: str
+    accounts: dict[str, str]
+    explanation: str
+
+
+class Reconciliation(BaseModel):
+    agreements: list[str] = Field(default_factory=list)
+    conflicts: list[Conflict] = Field(default_factory=list)
+    evidence: dict[str, list[str]] = Field(default_factory=dict)
+
+
+class Recommendation(BaseModel):
+    cluster_id: str
+    cluster_name: str
+    verdict: Verdict
+    confidence: float = Field(ge=0, le=1)
+    rationale: str
+    next_action: str
+    evidence_trace: list[str]
+    conflicts: list[str] = Field(default_factory=list)
+
+
+def parse_cluster(payload: dict[str, Any]) -> Cluster:
+    """Validate either the minimal Engine 1 shape or the guide's merged shape."""
+    return Cluster.model_validate(payload)

@@ -1,25 +1,15 @@
-"""AI Transformation Roadmap - Streamlit entry point."""
+"""Hidden-navigation entry point for the two-screen roadmap flow."""
+from pathlib import Path
+
 import streamlit as st
 from dotenv import load_dotenv
 
-load_dotenv()
+ROOT = Path(__file__).parent
+load_dotenv(ROOT / "api_key.env")
+load_dotenv(override=True)
 
 st.set_page_config(page_title="AI Transformation Roadmap", page_icon="🧭", layout="wide")
-st.markdown(
-    """
-    <style>
-      .stApp { font-size: 18px; }
-      h1 { font-size: 2.5rem !important; }
-      h2 { font-size: 1.8rem !important; }
-      div[data-testid="stWidgetLabel"] p,
-      div[data-testid="stCaptionContainer"] p { font-size: 1.05rem !important; }
-      input, textarea, div[data-baseweb="select"] span { font-size: 1.05rem !important; }
-      textarea { min-height: 120px !important; }
-      button { font-size: 1.05rem !important; }
-    </style>
-    """,
-    unsafe_allow_html=True,
-)
-st.title("AI Transformation Roadmap")
-st.write("Start in **Intake** from the sidebar to turn use cases into evidence-ready clusters.")
-st.info("Demo-safe mode is available: the app can use local fallback data if an API is unavailable.")
+
+input_page = st.Page("pages/1_intake.py", title="Input", default=True)
+output_page = st.Page("pages/3_decision.py", title="Output")
+st.navigation([input_page, output_page], position="hidden").run()

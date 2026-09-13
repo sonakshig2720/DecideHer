@@ -1,0 +1,102 @@
+[
+  {
+    "name": "Sample Sales User", "email": "sample01@example.invalid", "company": "Demo Company", "department": "Sales",
+    "idea": "Create a unified customer view", "what_happens_today": "Staff search CRM, email, and spreadsheets for customer history.", "why_we_want_this": "Give sales teams a current customer view before every call.",
+    "departments_involved": ["Sales", "Service"], "root_cause_stated": "The data", "task_type": "Searching for information", "frequency": "Several times a day", "time_per_occurrence": "15-30 min", "roles_involved": ["Frontline staff"], "people_affected": "21-50", "data_used": ["Customer contact details", "Customer orders or history"], "it_tools_used": ["CRM", "Email", "Spreadsheets"], "security_concern": ["Personal data of customers"], "blocked_by": "No time", "submitter_role": "I do the work"
+  },
+  {
+    "name": "Sample Service User", "email": "sample02@example.invalid", "company": "Demo Company", "department": "Service",
+    "idea": "Route support requests automatically", "what_happens_today": "A coordinator reads a shared inbox and forwards each request manually.", "why_we_want_this": "Classify and route requests to the correct team with clear ownership.",
+    "departments_involved": ["Service", "IT"], "root_cause_stated": "The process itself", "task_type": "Chasing people", "frequency": "Several times a day", "time_per_occurrence": "Under 15 min", "roles_involved": ["Admin", "Team lead"], "people_affected": "6-20", "data_used": ["Customer contact details"], "it_tools_used": ["Email", "Ticketing system"], "security_concern": ["Customer confidential or contractual"], "blocked_by": "Nobody agrees on the fix", "submitter_role": "I own it"
+  },
+  {
+    "name": "Sample Finance User", "email": "sample03@example.invalid", "company": "Demo Company", "department": "Finance",
+    "idea": "Automate invoice matching", "what_happens_today": "Analysts compare invoice lines with purchase orders in the ERP.", "why_we_want_this": "Flag mismatches and prepare clean invoices for approval.",
+    "departments_involved": ["Finance", "Operations"], "root_cause_stated": "The technology", "task_type": "Repetitive data entry", "frequency": "Daily", "time_per_occurrence": "1-3 hours", "roles_involved": ["Specialist"], "people_affected": "6-20", "data_used": ["Invoices or payments", "Supplier or purchasing"], "it_tools_used": ["ERP", "Spreadsheets"], "security_concern": ["Financial data"], "blocked_by": "No skills in-house", "submitter_role": "I manage the team that does it"
+  },
+  {
+    "name": "Sample HR User", "email": "sample04@example.invalid", "company": "Demo Company", "department": "HR",
+    "idea": "Draft onboarding documents", "what_happens_today": "HR rewrites similar welcome packs and role descriptions for every employee.", "why_we_want_this": "Generate consistent first drafts while retaining human approval.",
+    "departments_involved": ["HR"], "root_cause_stated": "The process itself", "task_type": "Writing or drafting", "frequency": "Weekly", "time_per_occurrence": "1-3 hours", "roles_involved": ["Specialist"], "people_affected": "2-5", "data_used": ["Employee or HR records"], "it_tools_used": ["Shared drive", "Email"], "security_concern": ["Personal data of staff"], "blocked_by": "No time", "submitter_role": "I do the work"
+  },
+  {
+    "name": "Sample Operations User", "email": "sample05@example.invalid", "company": "Demo Company", "department": "Operations",
+    "idea": "Predict inventory shortages", "what_happens_today": "Planners inspect inventory reports and rely on personal experience.", "why_we_want_this": "Identify likely shortages early and recommend replenishment actions.",
+    "departments_involved": ["Operations", "Sales"], "root_cause_stated": "The data", "task_type": "Manual", "frequency": "Daily", "time_per_occurrence": "30-60 min", "roles_involved": ["Specialist", "Team lead"], "people_affected": "6-20", "data_used": ["Product or inventory", "Customer orders or history"], "it_tools_used": ["ERP", "BI or reporting tool"], "security_concern": ["Nothing sensitive"], "blocked_by": "No budget", "submitter_role": "I own it"
+  },
+  {
+    "name": "Sample Quality User", "email": "sample06@example.invalid", "company": "Demo Company", "department": "Quality",
+    "idea": "Summarise audit findings", "what_happens_today": "Auditors read long reports and manually group recurring findings.", "why_we_want_this": "Summarise findings, trends, and required corrective actions.",
+    "departments_involved": ["Quality", "Operations"], "root_cause_stated": "The people involved", "task_type": "Searching for information", "frequency": "Monthly", "time_per_occurrence": "More than a day", "roles_involved": ["Specialist"], "people_affected": "2-5", "data_used": ["Quality or audit records"], "it_tools_used": ["Shared drive", "Spreadsheets"], "security_concern": ["Customer confidential or contractual"], "blocked_by": "No skills in-house", "submitter_role": "I do the work"
+  },
+  {
+    "name": "Sample IT User", "email": "sample07@example.invalid", "company": "Demo Company", "department": "IT",
+    "idea": "Reset common access issues through self-service", "what_happens_today": "Service desk staff repeatedly answer password and access questions.", "why_we_want_this": "Guide employees through approved self-service fixes and escalate exceptions.",
+    "departments_involved": ["IT"], "root_cause_stated": "The technology", "task_type": "Manual", "frequency": "Several times a day", "time_per_occurrence": "Under 15 min", "roles_involved": ["Frontline staff"], "people_affected": "More than 50", "data_used": ["Employee or HR records", "Technical documentation"], "it_tools_used": ["Ticketing system", "Chat"], "security_concern": ["Personal data of staff"], "blocked_by": "No authority", "submitter_role": "I manage the team that does it"
+  },
+  {
+    "name": "Sample Marketing User", "email": "sample08@example.invalid", "company": "Demo Company", "department": "Marketing",
+    "idea": "Create campaign first drafts", "what_happens_today": "Marketers start recurring email and social campaigns from a blank page.", "why_we_want_this": "Produce brand-aligned drafts that marketers can review and edit.",
+    "departments_involved": ["Marketing", "Sales"], "root_cause_stated": "The process itself", "task_type": "Writing or drafting", "frequency": "Weekly", "time_per_occurrence": "3-8 hours", "roles_involved": ["Specialist"], "people_affected": "6-20", "data_used": ["Internal know-how"], "it_tools_used": ["Email", "Shared drive"], "security_concern": ["Nothing sensitive"], "blocked_by": "No time", "submitter_role": "I do the work"
+  },
+  {
+    "name": "Sample Management User", "email": "sample09@example.invalid", "company": "Demo Company", "department": "Management",
+    "idea": "Prepare a weekly management brief", "what_happens_today": "Leaders combine reports from departments into presentation notes.", "why_we_want_this": "Create a concise weekly brief with sources and unresolved risks.",
+    "departments_involved": ["Management", "Finance", "Operations"], "root_cause_stated": "The data", "task_type": "Writing or drafting", "frequency": "Weekly", "time_per_occurrence": "3-8 hours", "roles_involved": ["Department head"], "people_affected": "6-20", "data_used": ["Financial data", "Internal know-how"], "it_tools_used": ["BI or reporting tool", "Spreadsheets", "Email"], "security_concern": ["Financial data"], "blocked_by": "Nobody agrees on the fix", "submitter_role": "I'm affected by it"
+  },
+  {
+    "name": "Sample Purchasing User", "email": "sample10@example.invalid", "company": "Demo Company", "department": "Operations",
+    "idea": "Route purchase approvals", "what_happens_today": "Employees email requests and chase managers for approval.", "why_we_want_this": "Apply approval thresholds and show every request's current status.",
+    "departments_involved": ["Operations", "Finance", "Management"], "root_cause_stated": "The process itself", "task_type": "Checking or approving", "frequency": "Daily", "time_per_occurrence": "15-30 min", "roles_involved": ["Admin", "Department head"], "people_affected": "21-50", "data_used": ["Supplier or purchasing", "Pricing or quotations"], "it_tools_used": ["Email", "ERP"], "security_concern": ["Financial data"], "blocked_by": "No authority", "submitter_role": "I do the work"
+  },
+  {
+    "name": "Sample Legal User", "email": "sample11@example.invalid", "company": "Demo Company", "department": "Management",
+    "idea": "Review standard contract clauses", "what_happens_today": "Reviewers compare contracts against templates clause by clause.", "why_we_want_this": "Flag deviations from approved clauses for qualified review.",
+    "departments_involved": ["Management", "Sales"], "root_cause_stated": "The people involved", "task_type": "Checking or approving", "frequency": "Weekly", "time_per_occurrence": "1-3 hours", "roles_involved": ["Specialist"], "people_affected": "2-5", "data_used": ["Contracts or legal"], "it_tools_used": ["Shared drive", "Email"], "security_concern": ["Customer confidential or contractual"], "blocked_by": "No budget", "submitter_role": "I own it"
+  },
+  {
+    "name": "Sample Field Service User", "email": "sample12@example.invalid", "company": "Demo Company", "department": "Service",
+    "idea": "Recommend fixes to field technicians", "what_happens_today": "Technicians call experienced colleagues when equipment behaves unexpectedly.", "why_we_want_this": "Retrieve relevant repair guidance from approved technical documentation.",
+    "departments_involved": ["Service", "Quality"], "root_cause_stated": "The people involved", "task_type": "Searching for information", "frequency": "Daily", "time_per_occurrence": "30-60 min", "roles_involved": ["Frontline staff", "Specialist"], "people_affected": "21-50", "data_used": ["Technical documentation", "Internal know-how"], "it_tools_used": ["Phone or customer service", "Shared drive"], "security_concern": ["Not sure"], "blocked_by": "No skills in-house", "submitter_role": "I'm affected by it"
+  },
+  {
+    "name": "Sample Customer Service User", "email": "sample13@example.invalid", "company": "Demo Company", "department": "Customer Service",
+    "idea": "Summarise customer calls", "what_happens_today": "Agents type call notes into CRM after each conversation.", "why_we_want_this": "Prepare an accurate call summary for agent confirmation.",
+    "departments_involved": ["Service", "Sales"], "root_cause_stated": "The technology", "task_type": "Repetitive data entry", "frequency": "Several times a day", "time_per_occurrence": "Under 15 min", "roles_involved": ["Frontline staff"], "people_affected": "More than 50", "data_used": ["Customer contact details", "Customer orders or history"], "it_tools_used": ["Phone or customer service", "CRM"], "security_concern": ["Personal data of customers"], "blocked_by": "No budget", "submitter_role": "I do the work"
+  },
+  {
+    "name": "Sample Recruitment User", "email": "sample14@example.invalid", "company": "Demo Company", "department": "HR",
+    "idea": "Coordinate interview scheduling", "what_happens_today": "Recruiters exchange many emails to find interview times.", "why_we_want_this": "Suggest available interview slots and track candidate confirmations.",
+    "departments_involved": ["HR", "Management"], "root_cause_stated": "The process itself", "task_type": "Chasing people", "frequency": "Daily", "time_per_occurrence": "15-30 min", "roles_involved": ["Admin", "Department head"], "people_affected": "6-20", "data_used": ["Employee or HR records"], "it_tools_used": ["Email"], "security_concern": ["Personal data of staff"], "blocked_by": "No time", "submitter_role": "I do the work"
+  },
+  {
+    "name": "Sample Production User", "email": "sample15@example.invalid", "company": "Demo Company", "department": "Operations",
+    "idea": "Detect production anomalies", "what_happens_today": "Operators monitor dashboards and manually investigate unusual readings.", "why_we_want_this": "Alert operators to meaningful anomalies with supporting sensor history.",
+    "departments_involved": ["Operations", "Quality", "IT"], "root_cause_stated": "The data", "task_type": "Automated but needs checking", "frequency": "Several times a day", "time_per_occurrence": "30-60 min", "roles_involved": ["Frontline staff", "Specialist"], "people_affected": "21-50", "data_used": ["Product or inventory", "Quality or audit records"], "it_tools_used": ["BI or reporting tool", "Custom in-house tool"], "security_concern": ["Nothing sensitive"], "blocked_by": "Don't know how", "submitter_role": "I manage the team that does it"
+  },
+  {
+    "name": "Sample Accounts User", "email": "sample16@example.invalid", "company": "Demo Company", "department": "Finance",
+    "idea": "Forecast cash collection", "what_happens_today": "Finance updates a spreadsheet forecast using overdue invoice reports.", "why_we_want_this": "Predict likely payment dates and highlight accounts needing follow-up.",
+    "departments_involved": ["Finance", "Sales"], "root_cause_stated": "The data", "task_type": "Partly automated", "frequency": "Weekly", "time_per_occurrence": "3-8 hours", "roles_involved": ["Specialist"], "people_affected": "2-5", "data_used": ["Invoices or payments", "Customer orders or history"], "it_tools_used": ["ERP", "Spreadsheets", "CRM"], "security_concern": ["Financial data", "Personal data of customers"], "blocked_by": "No skills in-house", "submitter_role": "I own it"
+  },
+  {
+    "name": "Sample Compliance User", "email": "sample17@example.invalid", "company": "Demo Company", "department": "Quality",
+    "idea": "Track policy acknowledgements", "what_happens_today": "Administrators email policies and manually chase missing confirmations.", "why_we_want_this": "Track acknowledgements and escalate overdue mandatory reading.",
+    "departments_involved": ["Quality", "HR", "Management"], "root_cause_stated": "The process itself", "task_type": "Chasing people", "frequency": "Quarterly", "time_per_occurrence": "More than a day", "roles_involved": ["Admin"], "people_affected": "More than 50", "data_used": ["Employee or HR records", "Contracts or legal"], "it_tools_used": ["Email", "Spreadsheets"], "security_concern": ["Personal data of staff"], "blocked_by": "No authority", "submitter_role": "I own it"
+  },
+  {
+    "name": "Sample Product User", "email": "sample18@example.invalid", "company": "Demo Company", "department": "Marketing",
+    "idea": "Group customer feedback themes", "what_happens_today": "Product teams manually read survey comments, tickets, and sales notes.", "why_we_want_this": "Cluster recurring feedback themes and link each theme to source comments.",
+    "departments_involved": ["Marketing", "Sales", "Service"], "root_cause_stated": "The data", "task_type": "Searching for information", "frequency": "Monthly", "time_per_occurrence": "More than a day", "roles_involved": ["Specialist", "Team lead"], "people_affected": "6-20", "data_used": ["Customer contact details", "Internal know-how"], "it_tools_used": ["CRM", "Ticketing system", "Spreadsheets"], "security_concern": ["Personal data of customers"], "blocked_by": "No time", "submitter_role": "I manage the team that does it"
+  },
+  {
+    "name": "Sample Safety User", "email": "sample19@example.invalid", "company": "Demo Company", "department": "Quality",
+    "idea": "Triage safety incidents", "what_happens_today": "A safety officer reads free-text incident reports and assigns severity.", "why_we_want_this": "Suggest severity and routing while requiring officer confirmation.",
+    "departments_involved": ["Quality", "Operations", "HR"], "root_cause_stated": "The people involved", "task_type": "Checking or approving", "frequency": "Unpredictable", "time_per_occurrence": "30-60 min", "roles_involved": ["Specialist", "Department head"], "people_affected": "More than 50", "data_used": ["Quality or audit records", "Employee or HR records"], "it_tools_used": ["Email", "Custom in-house tool"], "security_concern": ["Health data", "Personal data of staff"], "blocked_by": "Nobody agrees on the fix", "submitter_role": "I own it"
+  },
+  {
+    "name": "Sample Knowledge User", "email": "sample20@example.invalid", "company": "Demo Company", "department": "IT",
+    "idea": "Search internal policies conversationally", "what_happens_today": "Employees browse multiple shared folders or ask colleagues for policy answers.", "why_we_want_this": "Answer policy questions with citations to the current approved document.",
+    "departments_involved": ["IT", "HR", "Management"], "root_cause_stated": "The technology", "task_type": "Searching for information", "frequency": "Daily", "time_per_occurrence": "15-30 min", "roles_involved": ["Frontline staff", "Admin", "Specialist"], "people_affected": "More than 50", "data_used": ["Technical documentation", "Internal know-how"], "it_tools_used": ["Shared drive", "Chat"], "security_concern": ["Not sure"], "blocked_by": "No budget", "submitter_role": "I've just noticed it"
+  }
+]

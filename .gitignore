@@ -1,6 +1,10 @@
+__pycache__/
+.pytest_cache/
 .venv/
 .env
-__pycache__/
-*.py[cod]
-.streamlit/secrets.toml
+api_key.env
+decideher.db
 .secrets/
+.streamlit/static/
+static/dashboard/dashboard.json
+*.pyc

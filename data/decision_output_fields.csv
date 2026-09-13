@@ -1,0 +1,34 @@
+field_name,sits_on,source_primary,source_backup,values,rule_primary,rule_backup,purpose
+issue_id,issue,system,,auto-increment,,,Primary key
+submitter_id,issue,system,,auto-increment,,,Links to submitter record. Kept in a separate table from issue data
+root_cause_derived,issue,"model, from fields 5-7",,People | Process | Technology | Data,,,Mismatch against root_cause_stated is a headline finding
+capability_type,issue,"model, from fields 5-7",,draft or generate | extract or structure | classify or route | retrieve or answer | summarise | predict or score | decide or approve | transfer or sync | schedule or coordinate,,,"Primary clustering key. transfer or sync almost never needs AI"
+data_object,issue,model + field 16,,customer | employee | order | product | supplier | financial | internal knowledge | quality or compliance,,,Secondary clustering key
+personal_data_flag,issue,model + field 18,,yes | no | unclear,,,Drives anonymisation handling
+cluster_id,issue,system,,auto-increment,,,Assigned on capability_type x data_object. Not on raw text similarity
+volume_proxy,issue,"calculated, frequency x time_per_occurrence",,1-30,,,Raw score before banding. No invented currency values
+reach_score,issue,"calculated, from people_affected",,1-5,,,1 | 2-5 | 6-20 | 21-50 | more than 50 maps to 1-5
+cluster_name,cluster,model,,free text,,,"Model-generated label, e.g. fragmented customer information"
+reports_count,cluster,calculated,,integer,,,Number of issues in the cluster. Shown in the dashboard reports column
+departments_count,cluster,calculated,,integer,,,Three or more means cross-functional and a stronger consolidation case
+owned_system_match,cluster,owned_systems table,,system_id | none,"Match where owned_systems.capabilities contains cluster capability_type AND data_objects_held contains cluster data_object",Always none when the table is absent,Optional input. Absence degrades cleanly
+owned_system_unused_flag,cluster,owned_systems table,,yes | no,True where owned_system_match exists and adoption = Licensed but unused,Always no when the table is absent,"Produces the you already pay for this finding"
+impact_score,cluster,"calculated, sum of member volume_proxy plus max member reach_score x 2",,integer,,,Aggregated at cluster level. A cluster is more impactful than any single member
+impact_band,cluster,"banded, from impact_score",,High | Medium | Low,High 22 and above | Medium 12-21 | Low 11 and below,,No backup needed. Always derivable from the form
+readiness_technology,cluster,owned_systems table,form field it_tools_used,High | Medium | Low,High where owned system matches and adoption is fully or partly used | Medium where partial match or match with licensed but unused | Low where no match,High where cluster work sits in one system | Medium where two or three systems and no manual bridging | Low where spreadsheets email or paper present,Scores without the owned systems table. Improves with it
+readiness_people,cluster,interview,form fields blocked_by and submitter_role,High | Medium | Low,High where an owner was named and confirmed | Medium where owner named but disputed between accounts | Low where nobody could name an owner,High where a submitter says I own it and blocked_by is a capability gap | Medium where submitters are do the work or manage the team | Low where blocked_by is nobody agrees on the fix or no authority,Scores without an interview. Improves with one
+readiness_data,cluster,interview,form fields it_tools_used and security_concern,High | Medium | Low,High where one authoritative source confirmed | Medium where source named but others describe a different one | Low where accounts contradict on where the data lives,High where one system and nothing sensitive | Medium where two or three systems or personal data present | Low where spreadsheets email or paper or health data present,Scores without an interview. Improves with one
+readiness_process,cluster,interview,cross-report comparison + root_cause_derived + departments_count,High | Medium | Low,High where steps thresholds and exceptions are consistent | Medium where minor divergences and exceptions undocumented | Low where accounts contradict on ownership thresholds or whether a step exists,High where single department and accounts consistent and root cause is not process | Medium where two departments or root_cause_derived is process | Low where three or more departments describe the same work differently,"Strongest backup of the four. Needs no interview and no owned systems table"
+readiness_source,cluster,system,,owned_systems | interview | form_only,Record per dimension which path produced the score,,"Displayed under the band so the user knows what it rests on"
+readiness_band,cluster,lowest of the available readiness dimensions,,High | Medium | Low,"Lowest, never average. Score from three dimensions if technology is unavailable",,A single hard blocker makes the whole thing hard
+readiness_cap_rule,cluster,rules,,High | Medium | Low,No dimension may read High on the backup path when evidence_confidence_band is Low. Cap at Medium,,Stops the dashboard looking confident about nothing
+evidence_confidence_score,cluster,"calculated, 5 inputs scored 0-2",,0-10,Required field completeness | optional completeness | submitter_role authority | number of reports | interview run,,No backup needed. Always derivable from the form
+evidence_confidence_band,cluster,"banded, from evidence_confidence_score",,High | Medium | Low,High 8-10 | Medium 5-7 | Low 0-4,,
+verdict_confidence_score,cluster,"calculated, 4 inputs",3 inputs where owned_systems is absent,0-10,Rule agreement | owned_system_match clarity | root_cause agreement | account consistency,Rescale to three inputs and record the reduced basis,Confidence legitimately rises as the company supplies more input
+verdict_confidence_band,cluster,"banded, from verdict_confidence_score",,High | Medium | Low,High 8-10 | Medium 5-7 | Low 0-4. Never merged with evidence_confidence_band,,
+evidence_sufficient,cluster,rules,,yes | no plus missing fields,Gates whether any finding is published. No model involved,,Rule-based only. No model discretion
+finding_text,cluster,"model, constrained to template",,free text,One sentence stating what the data shows. Must cite a countable fact. Never a recommendation,,
+finding_drivers,cluster,system,,list of field names and values,The two or three inputs behind the finding,,Displayed under the band so a number is never shown alone
+evidence_refs,cluster,system,,list of issue_ids and interview statement ids,,,Makes every finding traceable to something a person actually said
+root_cause_gap,portfolio,calculated,,"count stated vs count derived, per root cause",,,Produces the headline: N said technology and M of those describe process
+blocker_concentration,portfolio,"calculated, from blocked_by",,count per blocker value,,,Produces the headline: N reports name nobody agrees on the fix
