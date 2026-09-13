@@ -2,6 +2,8 @@
   {
     "system_id": "SYS-001",
     "system_name": "SAP S/4HANA",
+    "name": "SAP S/4HANA",
+    "capabilities": ["decide or approve", "transfer or sync", "summarise", "predict or score", "schedule or coordinate", "financial", "order", "product", "supplier"],
     "category": "ERP",
     "modules_licensed": "Finance, procurement and supply chain",
     "capabilities_in_use": ["decide or approve", "transfer or sync"],
@@ -15,6 +17,8 @@
   {
     "system_id": "SYS-002",
     "system_name": "Salesforce Sales Cloud",
+    "name": "Salesforce Sales Cloud",
+    "capabilities": ["classify or route", "retrieve or answer", "decide or approve", "draft or generate", "summarise", "predict or score", "customer", "order"],
     "category": "CRM",
     "modules_licensed": "Sales Cloud Enterprise; no Service Cloud",
     "capabilities_in_use": ["classify or route", "retrieve or answer", "decide or approve"],
@@ -28,6 +32,8 @@
   {
     "system_id": "SYS-003",
     "system_name": "Microsoft 365 & SharePoint",
+    "name": "Microsoft 365 & SharePoint",
+    "capabilities": ["draft or generate", "retrieve or answer", "summarise", "schedule or coordinate", "extract or structure", "classify or route", "transfer or sync", "employee", "internal knowledge"],
     "category": "Collaboration suite",
     "modules_licensed": "Microsoft 365 E3 and SharePoint Online",
     "capabilities_in_use": ["draft or generate", "retrieve or answer", "summarise", "schedule or coordinate"],
@@ -41,6 +47,8 @@
   {
     "system_id": "SYS-004",
     "system_name": "DATEV",
+    "name": "DATEV",
+    "capabilities": ["extract or structure", "transfer or sync", "summarise", "predict or score", "employee", "financial", "supplier"],
     "category": "Finance",
     "modules_licensed": "Accounting, payroll and document transfer",
     "capabilities_in_use": ["extract or structure", "transfer or sync", "summarise"],
@@ -54,6 +62,8 @@
   {
     "system_id": "SYS-005",
     "system_name": "Customer Service Portal",
+    "name": "Customer Service Portal",
+    "capabilities": ["retrieve or answer", "transfer or sync", "classify or route", "draft or generate", "customer", "order", "internal knowledge"],
     "category": "Other",
     "modules_licensed": "Custom web application",
     "capabilities_in_use": ["retrieve or answer", "transfer or sync"],
