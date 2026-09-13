@@ -205,10 +205,10 @@ st.html(
 
       [data-testid="stTextInputRootElement"],
       [data-testid="stTextAreaRootElement"],
-      [data-testid="stSelectbox"] div:has(> input[role="combobox"]),
-      [data-testid="stMultiSelect"] div:has(> input[role="combobox"]) {
+      [data-testid="stSelectbox"] div[role="group"],
+      [data-testid="stMultiSelect"] div[role="group"] {
         min-height: 3.15rem !important;
-        border: 1px solid #9B9794 !important;
+        border: 1px solid #C7C2BF !important;
         border-radius: 10px !important;
         background: #FFFFFF !important;
         box-shadow: 0 1px 4px rgba(52, 7, 18, 0.06) !important;
@@ -216,8 +216,8 @@ st.html(
 
       [data-testid="stTextInputRootElement"]:focus-within,
       [data-testid="stTextAreaRootElement"]:focus-within,
-      [data-testid="stSelectbox"] div:has(> input[role="combobox"]):focus-within,
-      [data-testid="stMultiSelect"] div:has(> input[role="combobox"]):focus-within {
+      [data-testid="stSelectbox"] div[role="group"]:focus-within,
+      [data-testid="stMultiSelect"] div[role="group"]:focus-within {
         border-color: #700E22 !important;
         box-shadow: 0 0 0 2px rgba(112, 14, 34, 0.12), 0 2px 7px rgba(52, 7, 18, 0.07) !important;
       }
