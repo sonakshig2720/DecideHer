@@ -4,7 +4,7 @@ from __future__ import annotations
 from enum import Enum
 from typing import Any, Literal
 
-from pydantic import BaseModel, ConfigDict, Field, field_validator
+from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
 
 
 class UseCase(BaseModel):
@@ -60,8 +60,26 @@ class DerivedIssueFields(BaseModel):
 
 
 class OwnedSystem(BaseModel):
+    """Engine-facing view of both legacy and registered owned-system records."""
+
     name: str
     capabilities: list[str] = Field(default_factory=list)
+
+    @model_validator(mode="before")
+    @classmethod
+    def normalize_inventory_fields(cls, value: Any) -> Any:
+        if not isinstance(value, dict):
+            return value
+        normalized = dict(value)
+        normalized["name"] = normalized.get("name") or normalized.get("system_name")
+        if not normalized.get("capabilities"):
+            combined = [
+                *normalized.get("capabilities_in_use", []),
+                *normalized.get("capabilities_available", []),
+                *normalized.get("data_objects_held", []),
+            ]
+            normalized["capabilities"] = list(dict.fromkeys(combined))
+        return normalized
 
 
 class Engine1Cluster(BaseModel):

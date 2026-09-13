@@ -52,17 +52,7 @@ def cluster_database(focus_issue_id: str | None = None) -> tuple[list[dict], str
             )
         )
 
-    systems = [
-        OwnedSystem(
-            name=system["system_name"],
-            capabilities=(
-                system.get("capabilities_in_use", [])
-                + system.get("capabilities_available", [])
-                + system.get("data_objects_held", [])
-            ),
-        )
-        for system in list_owned_systems()
-    ]
+    systems = [OwnedSystem.model_validate(system) for system in list_owned_systems()]
     clusters = run_engine1(use_cases, systems)
     assignments = {}
     focused_cluster_id = None

@@ -1,4 +1,17 @@
+import json
+
 import storage
+from schemas import OwnedSystem
+
+
+def test_owned_system_contract_accepts_registered_inventory_shape():
+    record = json.loads(storage.OWNED_SYSTEM_SEED_PATH.read_text(encoding="utf-8"))[0]
+
+    system = OwnedSystem.model_validate(record)
+
+    assert system.name == "SAP S/4HANA"
+    assert "decide or approve" in system.capabilities
+    assert "financial" in system.capabilities
 
 
 def test_owned_system_inventory_is_seeded_and_accepts_new_records(tmp_path, monkeypatch):
